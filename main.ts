@@ -36,6 +36,11 @@ if (REPLY.length < 1 || REPLY.length > 159 || REPLY.trim().length === 0) {
 if (REPLY.includes("\n")) {
   throw new Error("entry must be a single line");
 }
+// The gate counts the whole line, so a stray leading or trailing space
+// would both waste the short budget and read as a sloppy auto-reply.
+if (REPLY !== REPLY.trim()) {
+  throw new Error("entry must not start or end with white space");
+}
 
 const dest = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
